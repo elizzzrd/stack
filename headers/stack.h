@@ -1,12 +1,16 @@
 #pragma once
-#define SIZE_MAX 100
+#include <stdbool.h>
+
 typedef int StackElem;
+
 
 typedef struct 
 {
+    StackElem left_canary;
     StackElem * data;
-    int size;
-    int capacity;
+    size_t size;
+    size_t capacity;
+    StackElem right_canary;
 } stack_t;
 
 typedef enum 
@@ -23,11 +27,12 @@ typedef enum
     STACK_INVALID_CAPACITY,
     STACK_INVALID_SIZE,
 
-} Stack_Err;  
+    STACK_CANARY_CORRUPTED
+} Stack_Err; 
 
-
-Stack_Err stack_init(stack_t * stack, int capacity);
+Stack_Err stack_init(stack_t * stack, size_t capacity);
 Stack_Err stack_destroy(stack_t * stack);
 Stack_Err stack_push(stack_t * stack, StackElem value);
 Stack_Err stack_pop(stack_t * stack, StackElem * value);
-void print_stack(const stack_t * stack);
+bool stack_is_empty(const stack_t * stack);
+bool stack_is_full(const stack_t * stack);

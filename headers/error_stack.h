@@ -1,6 +1,8 @@
 #pragma once
 #include "stack.h"
 
+#define CANARY_LEFT_VALUE ((StackElem)0xCAFEBABE)
+#define CANARY_RIGHT_VALUE ((StackElem)0xDEADBEEF)
 
 #define STACK_CHECK(stack_ptr) \
     do { \
@@ -12,7 +14,6 @@
     } while (0)
 
 
-
 void stack_dump(const stack_t * stack, Stack_Err error, const char * file, int line);
 Stack_Err stack_verify(const stack_t * stack); 
-const char* stack_error_string(Stack_Err error);
+const char * stack_error_string(Stack_Err error);

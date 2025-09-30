@@ -1,38 +1,70 @@
 #include <stdio.h>
 #include "stack.h"
-#include "error.h"
+#include "error_stack.h"
 
-int main() 
+
+void print_stack(const stack_t *stack) 
 {
-    stack_t stack = {};
-    Stack_Err err = stack_init(&stack, 5);   
+    if (!stack) { printf("Stack = NULL\n"); return; }
+    printf("Stack (size=%zu, capacity=%zu): ", stack->size, stack->capacity);
+    for (size_t i = 0; i < stack->size; i++) printf("%d ", stack->data[i]);
+    printf("\n");
+}
+
+
+void test_stack() 
+{
+    stack_t st = {};
+    Stack_Err err = stack_init(&st, 3);
 
     if (err != STACK_OK) 
     {
-        stack_dump(&stack, err, __FILE__, __LINE__);
-        return 1;
+        stack_dump(&st, err, __FILE__, __LINE__);
+        return;
     }
 
-
-    for (int i = 1; i < 4; i++)
-    {
-        err = stack_push(&stack, i * 10);
-        if (err != STACK_OK) 
-        {
-            stack_dump(&stack, err, __FILE__, __LINE__);
-            return 1;
-        }
+    printf("\n=== TEST: push ===\n");
+    for (int i = 1; i <= 3; i++) {
+        err = stack_push(&st, i * 10);
+        if (err != STACK_OK) stack_dump(&st, err, __FILE__, __LINE__);
     }
-
-    printf("Elements added to stack!\n");
-
-    StackElem value = 0;
-    while ((err = stack_pop(&stack, &value)) == STACK_OK) 
-    {
-        printf("Taken value: %d\n", value);
-    }
+    print_stack(&st);
     
+    // printf("\n=== TEST: overflow ===\n");
+    // err = stack_push(&st, 999);
+    // if (err != STACK_OK) stack_dump(&st, err, __FILE__, __LINE__);
+    // printf("Expected overflow error: %d\n", err);
+    // print_stack(&st);
 
-    stack_destroy(&stack);
+    printf("\n=== TEST: pop ===\n");
+    StackElem value;
+    while ((err = stack_pop(&st, &value)) == STACK_OK) 
+    {
+        printf("pop: %d\n", value);
+        print_stack(&st);
+    }
+
+    printf("\n=== TEST: underflow ===\n");
+    err = stack_pop(&st, &value);
+    if (err != STACK_OK) stack_dump(&st, err, __FILE__, __LINE__);
+    printf("Expected error underflow: %d\n", err);
+    print_stack(&st);
+
+    printf("\n=== TEST: canary defence ===\n");
+    st.data[-1] = 123;
+    err = stack_verify(&st);
+    if (err == STACK_CANARY_CORRUPTED) {
+        printf("!!! Canary corrupted, defence succeed !!!\n");
+    } else {
+        printf("Error: stack_verify has not detected anything\n");
+    }
+
+    stack_destroy(&st);
+}
+
+
+int main() 
+{
+    test_stack();
     return 0;
 }
