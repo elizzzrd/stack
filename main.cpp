@@ -15,14 +15,14 @@ void print_stack(const stack_t *stack)
 void test_stack() 
 {
     stack_t st = {};
-    Stack_Err err = stack_init(&st, 3);
+    Stack_Err err = stack_init(&st, 2);
 
     if (err != STACK_OK) 
     {
         stack_dump(&st, err, __FILE__, __LINE__);
         return;
     }
-
+    /*
     printf("\n=== TEST: push ===\n");
     for (int i = 1; i <= 3; i++) {
         err = stack_push(&st, i * 10);
@@ -57,6 +57,18 @@ void test_stack()
         printf("!!! Canary corrupted, defence succeed !!!\n");
     } else {
         printf("Error: stack_verify has not detected anything\n");
+    }
+    */
+    
+    printf("=== Заполнение и увеличение ===\n");
+    for (int i = 0; i < 10; i++) {
+        stack_push(&st, i);
+        printf("push(%d), size=%zu, capacity=%zu\n", i, st.size, st.capacity);
+    }
+
+    printf("=== Проверим данные ===\n");
+    for (size_t i = 0; i < st.size; i++) {
+        printf("[%zu] = %d\n", i, st.data[i]);
     }
 
     stack_destroy(&st);

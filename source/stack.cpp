@@ -39,18 +39,36 @@ Stack_Err stack_destroy(stack_t * stack)
     stack -> left_canary = 0;
     stack -> right_canary = 0;
 
-    return STACK_OK;
+    return STACK_OK; 
 }
 
 Stack_Err stack_push(stack_t * stack, StackElem value)
 {
     STACK_CHECK(stack);
     
+    if ((stack -> size) >= (stack -> capacity))
+    {
+        size_t new_capacity = (stack -> capacity) * 2;
+        if (new_capacity == 0) (new_capacity) = 1;
+
+        StackElem * old_stack_ptr = (stack -> data) - 1;
+        StackElem * new_stack_ptr = (StackElem *) realloc(old_stack_ptr, (new_capacity + 2) * sizeof(StackElem));
+        if (!new_stack_ptr) return STACK_MEMORY_ALLOCATION_ERROR;
+
+        new_stack_ptr[0] = CANARY_LEFT_VALUE;
+        new_stack_ptr[new_capacity + 1] = CANARY_RIGHT_VALUE;
+
+        stack -> data = new_stack_ptr + 1; 
+        stack -> capacity = new_capacity;
+    }
+
     stack -> data[stack -> size++] = value;
     
     STACK_CHECK(stack);
     return STACK_OK;
 }
+
+
 
 Stack_Err stack_pop(stack_t * stack, StackElem * value)
 {
