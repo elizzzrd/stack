@@ -5,7 +5,7 @@
 
 Stack_Err stack_verify(const stack_t * stack) 
 {
-    if (stack == NULL) return STACK_NULL_PTR;
+    if (stack == NULL)         return STACK_NULL_PTR;
     if (stack -> data == NULL) return STACK_UNINITIALIZED;
 
     //if ((stack -> capacity == 0)) return STACK_INVALID_CAPACITY;
@@ -14,7 +14,7 @@ Stack_Err stack_verify(const stack_t * stack)
     if (stack -> left_canary != CANARY_LEFT_VALUE ||
         stack -> right_canary != CANARY_RIGHT_VALUE) return STACK_CANARY_CORRUPTED;
     if (stack->data[-1] != CANARY_LEFT_VALUE || stack->data[stack->capacity] != CANARY_RIGHT_VALUE)
-    return STACK_CANARY_CORRUPTED;
+        return STACK_CANARY_CORRUPTED;
 
     return STACK_OK;
 }
@@ -35,10 +35,11 @@ const char * stack_error_string(Stack_Err error)
         "Stack canary corrupted"
     };
     
-    if (error < STACK_OK || error > STACK_CANARY_CORRUPTED) return "Unknown error";
+    if (error < STACK_OK || error > STACK_FILE_ERROR) return "Unknown error";
     
     return error_strings[error];
 }
+
 
 
 void stack_dump(const stack_t * stack, Stack_Err error, const char * file, int line)

@@ -8,8 +8,7 @@
 Stack_Err stack_init(stack_t * stack, size_t capacity)
 {
     if (stack == NULL) return STACK_NULL_PTR;
-    if (capacity <= 0) return STACK_INVALID_CAPACITY;
-    
+        
     stack -> left_canary = CANARY_LEFT_VALUE;
     stack -> right_canary = CANARY_RIGHT_VALUE;
 
@@ -68,13 +67,12 @@ Stack_Err stack_push(stack_t * stack, StackElem value)
     return STACK_OK;
 }
 
-
+// TODO: реаллокацию вниз
 
 Stack_Err stack_pop(stack_t * stack, StackElem * value)
 {
     if (stack == NULL) return STACK_NULL_PTR;
     if (value == NULL) return STACK_NULL_PTR;
-    if (stack -> size == 0) return STACK_UNDERFLOW;
     STACK_CHECK(stack);
     
     *value = stack -> data[--(stack -> size)];
@@ -95,5 +93,3 @@ bool stack_is_full(const stack_t * stack)
     if (stack == NULL) return false;
     return stack->size >= stack->capacity;
 }
-
-

@@ -3,7 +3,6 @@
 
 typedef int StackElem;
 
-
 typedef struct 
 {
     StackElem left_canary;
@@ -27,7 +26,9 @@ typedef enum
     STACK_INVALID_CAPACITY,
     STACK_INVALID_SIZE,
 
-    STACK_CANARY_CORRUPTED
+    STACK_CANARY_CORRUPTED,
+
+    STACK_FILE_ERROR
 } Stack_Err; 
 
 Stack_Err stack_init(stack_t * stack, size_t capacity);
