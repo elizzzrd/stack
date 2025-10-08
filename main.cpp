@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include "stack.h"
-#include "error_stack.h"
+#include "errors.h"
 
 
 void print_stack(const stack_t *stack) 
@@ -12,10 +12,11 @@ void print_stack(const stack_t *stack)
 }
 
 
-void test_stack() 
+
+int main() 
 {
     stack_t st = {};
-    Stack_Err err = stack_init(&st, -9);
+    Stack_Err err = stack_init(&st, -9); 
 
     if (err != STACK_OK) 
     {
@@ -59,7 +60,6 @@ void test_stack()
         printf("Error: stack_verify has not detected anything\n");
     }
     
-    
 
     /*
     printf("=== Entering and resizing ===\n");
@@ -75,11 +75,5 @@ void test_stack()
     */
 
     stack_destroy(&st);
-}
-
-
-int main() 
-{
-    test_stack();
     return 0;
 }

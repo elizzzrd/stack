@@ -9,7 +9,7 @@
 const char * stack_commands[] = 
 {
     "HLT", "PUSH", "DUMP", "ADD", "SUB", "MUL", 
-    "DIV", "SQRT","OUT"
+    "DIV", "SQRT","OUT", "POPR", "PUSHR"
 };
 
 int check_option(char * option)

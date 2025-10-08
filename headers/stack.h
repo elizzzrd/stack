@@ -12,28 +12,31 @@ typedef struct
     StackElem right_canary;
 } stack_t;
 
-typedef enum 
+
+enum 
 {
-    STACK_OK = 0,
+    STACK_OK                      = 0u,        // 00000000
 
-    STACK_MEMORY_ALLOCATION_ERROR,
-    STACK_NULL_PTR,
-    STACK_UNINITIALIZED,
+    STACK_MEMORY_ALLOCATION_ERROR = 1u << 0,   // 00000001
+    STACK_NULL_PTR                = 1u << 1,   // 00000010
+    STACK_UNINITIALIZED           = 1u << 2,   // 00000100
 
-    STACK_OVERFLOW,
-    STACK_UNDERFLOW,
+    STACK_OVERFLOW                = 1u << 3,   // 00001000
+    STACK_UNDERFLOW               = 1u << 4,   // 00010000
 
-    STACK_INVALID_CAPACITY,
-    STACK_INVALID_SIZE,
+    STACK_INVALID_CAPACITY        = 1u << 5,   // 00100000
+    STACK_INVALID_SIZE            = 1u << 6,   // 01000000
 
-    STACK_CANARY_CORRUPTED,
+    STACK_CANARY_CORRUPTED        = 1u << 7,   // 10000000
 
-    STACK_FILE_ERROR
-} Stack_Err; 
+};
+
+typedef unsigned int Stack_Err;
 
 Stack_Err stack_init(stack_t * stack, size_t capacity);
 Stack_Err stack_destroy(stack_t * stack);
 Stack_Err stack_push(stack_t * stack, StackElem value);
 Stack_Err stack_pop(stack_t * stack, StackElem * value);
+Stack_Err stack_resize(stack_t * stack, size_t new_capacity);
 bool stack_is_empty(const stack_t * stack);
 bool stack_is_full(const stack_t * stack);

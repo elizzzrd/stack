@@ -7,7 +7,7 @@
 typedef enum 
 {
     HLT, PUSH, DUMP, ADD, SUB, MUL,
-    DIV, SQRT, OUT
+    DIV, SQRT, OUT, POPR, PUSHR
 } Stack_commands;
 
 
