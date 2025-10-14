@@ -87,6 +87,7 @@ Stack_Err stack_pop(stack_t * stack, StackElem * value)
 
 Stack_Err stack_resize(stack_t * stack, size_t new_capacity)
 {
+    Stack_Err errors = STACK_OK;
     if (stack == NULL) return STACK_NULL_PTR;
 
     if (new_capacity == 0) (new_capacity) = 1;
@@ -94,7 +95,7 @@ Stack_Err stack_resize(stack_t * stack, size_t new_capacity)
 
     StackElem * old_ptr = (stack -> data) - 1;
     StackElem * new_ptr = (StackElem *) realloc(old_ptr, (new_capacity + 2) * sizeof(StackElem));
-    if (!new_ptr) return STACK_MEMORY_ALLOCATION_ERROR;
+    if (!new_ptr) errors |= STACK_MEMORY_ALLOCATION_ERROR;
     else
     {
         new_ptr[0] = CANARY_LEFT_VALUE;
@@ -103,6 +104,7 @@ Stack_Err stack_resize(stack_t * stack, size_t new_capacity)
         stack -> data = new_ptr + 1;
         stack -> capacity = new_capacity;
     }
+    return errors;
 }
 
 bool stack_is_empty(const stack_t * stack) 

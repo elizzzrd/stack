@@ -6,6 +6,17 @@
 #include "assembler.h"
 #include "spu.h"
 
+/*
+TODO:
+log_message - макрос - переменное число аргументов
+makefile - processor
+объединить push, pushr
+проверка на отрицательный capacity
+оптимизировать switch в процессоре
+вычисление квадр уравнения и факториала на стеке
+проверка стека на уязвимость
+проверка spu_dump
+*/
 
 int main(void)
 {

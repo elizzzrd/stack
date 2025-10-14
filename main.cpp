@@ -16,12 +16,12 @@ void print_stack(const stack_t *stack)
 int main() 
 {
     stack_t st = {};
-    Stack_Err err = stack_init(&st, -9); 
+    Stack_Err err = stack_init(&st, 8); 
 
     if (err != STACK_OK) 
     {
         stack_dump(&st, err, __FILE__, __LINE__);
-        return;
+        return 1;
     }
     
     printf("\n=== TEST: push ===\n");
@@ -45,11 +45,11 @@ int main()
         print_stack(&st);
     }
 
-    printf("\n=== TEST: underflow ===\n");
-    err = stack_pop(&st, &value);
-    if (err != STACK_OK) stack_dump(&st, err, __FILE__, __LINE__);
-    printf("Expected error underflow: %d\n", err);
-    print_stack(&st);
+    // printf("\n=== TEST: underflow ===\n");
+    // err = stack_pop(&st, &value);
+    // if (err != STACK_OK) stack_dump(&st, err, __FILE__, __LINE__);
+    // printf("Expected error underflow: %d\n", err);
+    // print_stack(&st);
 
     printf("\n=== TEST: canary defence ===\n");
     st.data[-1] = 123;

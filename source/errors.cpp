@@ -23,10 +23,8 @@ void log_close(void)
 
 void log_message(const char * format, const char * file, int line)
 {
-    fprintf(log_file, "[%s %s]: %s\n", file, line, format);
+    fprintf(log_file, "[%s %d]: %s\n", file, line, format);
     fprintf(log_file, "\n");
-
-    fclose(log_file);
 }
 
 Stack_Err stack_verify(const stack_t * stack) 
@@ -90,7 +88,7 @@ void stack_dump(const stack_t * stack, Stack_Err error, const char * file, int l
 {
     fprintf(log_file, "============STACK DUMP============\n");
     fprintf(log_file, "\nstack_dump called from %s : %d\n", file, line);
-    fprintf(log_file, "Error: %s (%d)\n", stack_error_string(error), error);
+    fprintf(log_file, "Error: %s (%u)\n", stack_error_string(error), error);
 
     if (stack == NULL) 
     {
@@ -135,7 +133,7 @@ void spu_dump(const spu_t * spu, Spu_Err err, const char * file, int line)
 {
     fprintf(log_file, "============SPU DUMP============\n");
     fprintf(log_file, "SPU DUMP called from %s:%d\n", file, line);
-    fprintf(log_file, "SPU ERROR: %s (%d)\n", spu_error_string(err), err);
+    fprintf(log_file, "SPU ERROR: %s (%u)\n", spu_error_string(err), err);
 
     if (spu == NULL) {
         fprintf(log_file, "SPU pointer is NULL\n");

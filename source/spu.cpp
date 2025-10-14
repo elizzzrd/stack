@@ -20,12 +20,12 @@ Spu_Err spu_init(spu_t * spu)
     }
 
     spu -> code_size = 0;
-    int * code = load_bytecode("byte_code.txt", &(spu -> code_size));
+    spu -> instructor_ptr = 0;
 
-    size_t instructor_ptr = 0;
+    spu -> code = load_bytecode("text/byte_code.txt", &(spu -> code_size));
     spu -> stack = {};
     if((stack_init(&(spu -> stack), 8)) != STACK_OK) errors |= SPU_STACK_ERROR;
-    StackElem regs[16] = {};
+    for (size_t i = 0; i < REGS_COUNT; i++) spu->regs[i] = 0;
 
     return errors;
 }

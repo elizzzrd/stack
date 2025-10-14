@@ -10,6 +10,7 @@
 #include "errors.h"
 #include "read_file.h"
 #include "spu.h"
+#include "assembler.h"
 
 
 
@@ -48,7 +49,6 @@ Spu_Err parse_line(const char * line, FILE * file_byte)
     }
     else if (cmd_index == POPR || cmd_index == PUSHR)
     {
-        int value = 0;
         char reg_buffer[NMAX] = {};
         int reg_num = 0;
         if ((sscanf(temp_buffer + strlen(option), "%s", reg_buffer) != 1) && (reg_num = check_register(reg_buffer)) == 0) errors |= SPU_INVALID_COMMAND;
@@ -63,7 +63,6 @@ Spu_Err parse_line(const char * line, FILE * file_byte)
     }
     return errors;
 }
-
 
 int check_register(const char * reg_buffer)
 {
@@ -123,7 +122,7 @@ int * load_bytecode(const char * file_byte, size_t * size)
     }
 
     size_t file_size = get_file_size(file_byte);
-    int * code = (int *) calloc(file_size + 1, sizeof(StackElem)); // какого размера массив code 
+    int * code = (int *) calloc(file_size + 1, sizeof(StackElem));  
     if (!code) 
     { 
         fclose(file); 

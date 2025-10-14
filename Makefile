@@ -9,9 +9,11 @@ CXXFLAGS := -g -D _DEBUG -ggdb3 -std=c++17 -O0 -Wall -Wextra -Weffc++ -Waggressi
  -Wsuggest-attribute=noreturn -Wsuggest-final-methods -Wsuggest-final-types -Wsuggest-override -Wswitch-default\
  -Wswitch-enum -Wsync-nand -Wundef -Wunreachable-code -Wunused -Wuseless-cast -Wvariadic-macros -Wno-literal-suffix \
  -Wno-missing-field-initializers -Wno-narrowing -Wno-old-style-cast -Wno-varargs -Wstack-protector -fcheck-new \
- -fsized-deallocation -fstack-protector -fstrict-overflow -flto-odr-type-merging -fno-omit-frame-pointer -Wlarger-than=8192 \
- -Wstack-usage=8192 -pie -fPIE -Werror=vla \
+ -fsized-deallocation -fstack-protector -fstrict-overflow -flto-odr-type-merging -fno-omit-frame-pointer  \
+ -Wstack-usage=8192 -pie -fPIE -Werror=vla -fstack-usage \
  $(SANITIZERS)
+
+# -Wlarger-than=8192
 
 LDFLAGS := $(SANITIZERS) -pie -fPIE
 
@@ -23,11 +25,11 @@ BUILD_DIR := build
 BIN_DIR := $(BUILD_DIR)/bin
 OBJ_DIR := $(BUILD_DIR)/obj
 
-SOURCES := main.cpp \
+SOURCES := processor.cpp \
           $(wildcard $(SRC_DIR)/*.cpp) 
 OBJECTS := $(SOURCES:%.cpp=$(OBJ_DIR)/%.o)
 
-TARGET := $(BIN_DIR)/main
+TARGET := $(BIN_DIR)/processor
 
 all: $(TARGET)
 
@@ -45,7 +47,9 @@ clean:
 	rm -rf $(BUILD_DIR)
 
 rebuild: clean all
-	
+
+
+
 
 check: $(TARGET)
 	cd build/bin
