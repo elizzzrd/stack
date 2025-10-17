@@ -54,29 +54,30 @@ Spu_Err run_spu(spu_t * spu)
                     fprintf(log_file, "Error: missing argument for PUSH\n"); // error to log file
                     break;
                 }
-                int value = (spu -> code)[spu -> instructor_ptr];
-                if (is_command(value))
-                {
-                    spu_errors |= SPU_INVALID_COMMAND;  
-                    fprintf(log_file, "Error: invalid argument for PUSH — got another command (%d)\n", value);
-                    break; 
-                }
-                (spu->instructor_ptr)++;
-                stack_push(&(spu->stack), value);
+                int arg = spu->code[spu->instructor_ptr++];
+
+                if (arg >= 1 && arg <= REGS_COUNT)
+                    stack_errors = stack_push(&spu->stack, spu->regs[arg - 1]);
+                else
+                    stack_errors = stack_push(&spu->stack, arg);
+
                 break;
             }
-            case POPR:
+            case POP:
             {
-                int reg_num = (spu -> code)[spu -> instructor_ptr++];
                 StackElem a = 0;
                 stack_errors = stack_pop(&(spu -> stack), &a);
-                spu -> regs[reg_num] = a;
-                break;
-            }
-            case PUSHR:
-            {
-                int reg_num = (spu -> code)[spu -> instructor_ptr++];
-                stack_errors = stack_push(&(spu -> stack), spu -> regs[reg_num]);
+
+                if (spu->instructor_ptr < spu->code_size)
+                {
+                    int reg_num = (spu -> code)[spu->instructor_ptr];
+        
+                    if (reg_num >= 1 && reg_num <= REGS_COUNT)
+                    {
+                        spu->regs[reg_num - 1] = a;
+                        spu->instructor_ptr++; 
+                    }
+                }
                 break;
             }
             case DUMP: stack_dump(&(spu -> stack), stack_errors, __FILE__, __LINE__); break;
@@ -146,7 +147,12 @@ Spu_Err run_spu(spu_t * spu)
                 printf("%d\n", a);
                 break;
             }
-            default: log_message("Unknown commmand\n", __FILE__, __LINE__); break; 
+            default: 
+            {
+                log_message("Unknown command\n", __FILE__, __LINE__);
+                spu_errors |= SPU_INVALID_COMMAND;
+                break;
+            } 
         }
 
         if (stack_errors != STACK_OK) 

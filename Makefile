@@ -1,7 +1,6 @@
 CXX := g++
-SANITIZERS := -fsanitize=address,alignment,bool,bounds,enum,float-cast-overflow,float-divide-by-zero,integer-divide-by-zero,leak,nonnull-attribute,null,object-size,return,returns-nonnull-attribute,shift,signed-integer-overflow,undefined,unreachable,vla-bound,vptr
 
-CXXFLAGS := -g -D _DEBUG -ggdb3 -std=c++17 -O0 -Wall -Wextra -Weffc++ -Waggressive-loop-optimizations \
+CXXFLAGS := -g -ggdb3 -D_DEBUG -std=c++17 -Wall -Wextra -Weffc++ -Waggressive-loop-optimizations \
  -Wc++14-compat -Wmissing-declarations -Wcast-align -Wcast-qual -Wchar-subscripts -Wconditionally-supported \
  -Wconversion -Wctor-dtor-privacy -Wempty-body -Wfloat-equal -Wformat-nonliteral -Wformat-security -Wformat-signedness\
  -Wformat=2 -Winline -Wlogical-op -Wnon-virtual-dtor -Wopenmp-simd -Woverloaded-virtual -Wpacked -Wpointer-arith\
@@ -10,12 +9,9 @@ CXXFLAGS := -g -D _DEBUG -ggdb3 -std=c++17 -O0 -Wall -Wextra -Weffc++ -Waggressi
  -Wswitch-enum -Wsync-nand -Wundef -Wunreachable-code -Wunused -Wuseless-cast -Wvariadic-macros -Wno-literal-suffix \
  -Wno-missing-field-initializers -Wno-narrowing -Wno-old-style-cast -Wno-varargs -Wstack-protector -fcheck-new \
  -fsized-deallocation -fstack-protector -fstrict-overflow -flto-odr-type-merging -fno-omit-frame-pointer  \
- -Wstack-usage=8192 -pie -fPIE -Werror=vla -fstack-usage \
- $(SANITIZERS)
-
-# -Wlarger-than=8192
-
-LDFLAGS := $(SANITIZERS) -pie -fPIE
+ -Wstack-usage=8192 -Werror=vla -fstack-usage -fsanitize=address,alignment,bool,bounds,enum,float-cast-overflow,float-divide-by-zero,integer-divide-by-zero,leak,nonnull-attribute,null,object-size,return,returns-nonnull-attribute,shift,signed-integer-overflow,undefined,unreachable,vla-bound,vptr\
+ 
+# -Wlarger-than=8192 -pie -fPIE -D_DEBUG
 
 INCLUDES = -I headers/ 
 
@@ -34,7 +30,7 @@ TARGET := $(BIN_DIR)/processor
 all: $(TARGET)
 
 $(TARGET): $(OBJECTS) | $(BIN_DIR)
-	@$(CXX) $(OBJECTS) $(LDFLAGS) -o $@ 
+	@$(CXX) $(OBJECTS) -o $@ 
 
 $(OBJ_DIR)/%.o: %.cpp | $(OBJ_DIR)
 	@mkdir -p $(dir $@)
@@ -49,10 +45,9 @@ clean:
 rebuild: clean all
 
 
-
-
 check: $(TARGET)
 	cd build/bin
 	./$(TARGET)
+
 
 .PHONY: all clean rebuild start

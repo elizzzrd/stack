@@ -1,0 +1,20 @@
+[source/assembler.cpp 166]: Unknown command in text file
+
+
+[source/assembler.cpp 166]: Unknown command in text file
+
+
+[source/assembler.cpp 166]: Unknown command in text file
+
+
+[source/assembler.cpp 225]: Unknown command
+
+[source/assembler.cpp 225]: Unknown command
+
+[source/assembler.cpp 225]: Unknown command
+
+[source/assembler.cpp 291]: Assembler failed during passes
+
+[processor.cpp 37]: Assembly error
+
+

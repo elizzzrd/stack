@@ -9,7 +9,8 @@
 const char * stack_commands[] = 
 {
     "HLT", "PUSH", "DUMP", "ADD", "SUB", "MUL", 
-    "DIV", "SQRT","OUT", "POPR", "PUSHR"
+    "DIV", "SQRT","OUT", "POP", 
+    "JB", "JBE", "JA", "JAE", "JE", "JNE", "JMP"
 };
 
 int check_option(char * option)
@@ -45,4 +46,28 @@ size_t get_file_size(const char * filename)
     }
 
     return (size_t)(file_stat.st_size);
+}
+
+
+bool is_label(const char * option)
+{
+    return option[0] == ':' && isdigit(option[1]);
+}
+
+bool is_number(const char * str) 
+{
+    if (!str || !*str) return false;
+    if (*str == '-' || *str == '+') str++;
+    for (; *str; str++)     
+    {
+        if (!isdigit((unsigned char)*str)) return false;
+    }
+    return true;
+}
+
+int check_register(const char * reg_buffer)
+{
+    int reg_num = (toupper(reg_buffer[1]) - 'A') + 1;
+    if (strlen(reg_buffer) != 3 && (reg_num < 1 || reg_num > 16)) return 0;
+    else return reg_num;
 }

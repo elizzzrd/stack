@@ -7,7 +7,7 @@
 typedef enum 
 {
     HLT, PUSH, DUMP, ADD, SUB, MUL,
-    DIV, SQRT, OUT, POPR, PUSHR
+    DIV, SQRT, OUT, POP, JB, JBE, JA, JAE, JE, JNE, JMP
 } Stack_commands;
 
 
@@ -15,6 +15,9 @@ typedef enum
 void to_upper_str(const char * input, char * output);
 size_t get_file_size(const char * filename);
 int check_option(char * option);
+int check_register(const char * reg_buffer);
+bool is_number(const char *str);
+bool is_label(const char * option);
 
 
 // extern const char *stack_commands[];

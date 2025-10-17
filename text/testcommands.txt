@@ -1,12 +1,15 @@
-PUSH 2
-PUSH 2
-MUL
-PUSH 4
-PUSH 1
-PUSH -10
-MUL
-MUL
-SUB
-OUT
-OUT
-HLT
+push 1
+pop rax
+:0
+push rax
+push rax
+mul
+out
+push rax
+push 1
+add
+pop rax
+push rax
+push 10
+jb :0
+hlt
